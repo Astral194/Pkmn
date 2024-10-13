@@ -1,0 +1,12 @@
+STAGE1
+Pangoro
+140
+DARKNESS
+src/main/resources/evolves_from.txt
+1DD / Knocking Hammer / 90, 1DDD / Shakedown / 150
+GRASS
+None
+4
+Sword & Shield—Fusion Strike
+E
+Пегов / Евгений / Викторович / БСБО-04-23

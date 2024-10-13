@@ -1,0 +1,12 @@
+BASIC
+Pancham
+60
+FIGHTING
+None
+2 / Arm Thrust / 40
+PSYCHIC
+None
+2
+Sword & Shield—Fusion Strike
+E
+None
