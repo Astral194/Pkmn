@@ -1,4 +1,4 @@
-package ru.mirea.Pegov;
+package ru.mirea.pkmn;
 
 public enum PokemonStage {
     BASIC,

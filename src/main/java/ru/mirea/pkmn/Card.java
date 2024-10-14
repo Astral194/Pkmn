@@ -1,9 +1,10 @@
-package ru.mirea.Pegov;
+package ru.mirea.pkmn;
 
 import java.util.List;
 import java.io.Serializable;
 
 public class Card implements Serializable{
+    public static final long serialVersionUID = 1L;
     private PokemonStage pokemonStage;
     private String name;
     private int hp;
