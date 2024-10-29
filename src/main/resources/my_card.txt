@@ -1,5 +1,6 @@
 STAGE1
 Pangoro
+174
 140
 DARKNESS
 src/main/resources/evolves_from.txt

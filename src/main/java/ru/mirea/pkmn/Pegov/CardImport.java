@@ -1,6 +1,8 @@
 package ru.mirea.pkmn.Pegov;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import ru.mirea.pkmn.*;
+import ru.mirea.pkmn.Pegov.web.http.PkmnHttpClient;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -21,34 +23,25 @@ public class CardImport {
                 data.add(line);
             }
 
-            for (int i = 0; i < 12; i ++)
+            for (int i = 0; i < 13; i ++)
             {
                 switch (i) {
                     case 0 -> card.setPokemonStage(PokemonStage.valueOf(data.get(0)));
                     case 1 -> card.setName(data.get(1));
-                    case 2 -> card.setHp(Integer.parseInt(data.get(2)));
-                    case 3 -> card.setPokemonType(EnergyType.valueOf(data.get(3).toUpperCase()));
-                    case 4 ->
-                            card.setEvolvesFrom((data.get(4).equalsIgnoreCase("None") || data.get(4).equalsIgnoreCase("-")) ? null : readCard(data.get(4)));
-                    case 5 -> {
-                        ArrayList<AttackSkill> skill = new ArrayList<>();
-                        String[] attack_skill = data.get(5).split(",");
-                        for (String attack : attack_skill) {
-                            String[] tmp = attack.split(" / ");
-                            AttackSkill as = new AttackSkill(tmp[1], "", tmp[0], Integer.parseInt(tmp[2]));
-                            skill.add(as);
-                        }
-                        card.setSkills(skill);
-                        break;
-                    }
-                    case 6 ->
-                            card.setWeaknessType((data.get(6).equalsIgnoreCase("None") || data.get(6).equalsIgnoreCase("-")) ? null : EnergyType.valueOf(data.get(6).toUpperCase()));
+                    case 2 -> card.setNumber(data.get(2));
+                    case 3 -> card.setHp(Integer.parseInt(data.get(3)));
+                    case 4 -> card.setPokemonType(EnergyType.valueOf(data.get(4).toUpperCase()));
+                    case 5 ->
+                            card.setEvolvesFrom((data.get(5).equalsIgnoreCase("None") || data.get(5).equalsIgnoreCase("-")) ? null : readCard(data.get(5)));
+                    case 6 -> {card.setSkills(getAttackskils(data.get(6), card));break;}
                     case 7 ->
-                            card.setResistanceType((data.get(7).equalsIgnoreCase("None") || data.get(7).equalsIgnoreCase("-")) ? null : EnergyType.valueOf(data.get(7).toUpperCase()));
-                    case 8 -> card.setRetreatCost(data.get(8));
-                    case 9 -> card.setGameSet(data.get(9));
-                    case 10 -> card.setRegulationMark(data.get(10).charAt(0));
-                    case 11 -> card.setPokemonOwner(getStudent(data.get(11)));
+                            card.setWeaknessType((data.get(7).equalsIgnoreCase("None") || data.get(7).equalsIgnoreCase("-")) ? null : EnergyType.valueOf(data.get(7).toUpperCase()));
+                    case 8 ->
+                            card.setResistanceType((data.get(8).equalsIgnoreCase("None") || data.get(8).equalsIgnoreCase("-")) ? null : EnergyType.valueOf(data.get(8).toUpperCase()));
+                    case 9 -> card.setRetreatCost(data.get(9));
+                    case 10 -> card.setGameSet(data.get(10));
+                    case 11 -> card.setRegulationMark(data.get(11).charAt(0));
+                    case 12 -> card.setPokemonOwner(getStudent(data.get(12)));
                 }
             }
         }
@@ -64,6 +57,32 @@ public class CardImport {
         return card;
     }
 
+    public static  List<AttackSkill> getAttackskils(String attacks, Card pokemon) throws IOException {
+        ArrayList<AttackSkill> skill = new ArrayList<>();
+        String[] attack_skill = attacks.split(",");
+        List<String> desc_of_attack= getDesc(pokemon);
+        int i = 0;
+        for (String attack : attack_skill) {
+            String[] tmp = attack.split(" / ");
+            AttackSkill as = new AttackSkill(tmp[1], desc_of_attack.get(i++) , tmp[0], Integer.parseInt(tmp[2]));
+            skill.add(as);
+        }
+        return skill;
+    }
+
+    public static List<String> getDesc(Card card1) throws IOException {
+        PkmnHttpClient pkmnHttpClient = new PkmnHttpClient();
+        JsonNode cardjson = pkmnHttpClient.getPokemonCard(card1.getName(), card1.getNumber());
+        List<JsonNode> attack = cardjson.findValues("attacks");
+        List<String> desc_of_attack = new ArrayList<>();
+        for (JsonNode att : attack){
+            for (JsonNode attacks : att){
+                desc_of_attack.add(attacks.get("text").toString());
+            }
+        }
+        return desc_of_attack;
+    }
+
     private static Student getStudent(String s){
         if (s.equalsIgnoreCase("none")) return new Student();
 
@@ -72,7 +91,7 @@ public class CardImport {
         return student;
     }
 
-    public static <RandomClass> Card cardImportByte(String path) throws ClassNotFoundException {
+    public static Card cardImportByte(String path) throws ClassNotFoundException {
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(path));
             return (Card) in.readObject();

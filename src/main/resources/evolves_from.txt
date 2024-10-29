@@ -1,5 +1,6 @@
 BASIC
 Pancham
+81
 60
 FIGHTING
 None

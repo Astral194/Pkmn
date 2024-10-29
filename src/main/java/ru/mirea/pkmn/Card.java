@@ -17,6 +17,15 @@ public class Card implements Serializable{
     private String gameSet;
     private char regulationMark;
     private Student pokemonOwner;
+    private String number;
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
     public PokemonStage getPokemonStage() {
         return pokemonStage;
@@ -114,7 +123,9 @@ public class Card implements Serializable{
         this.pokemonOwner = pokemonOwner;
     }
 
-    public Card(PokemonStage pokemonStage, String name, int hp, EnergyType pokemonType, Card evolvesFrom, List<AttackSkill> skills, EnergyType weaknessType, EnergyType resistanceType, String retreatCost, String gameSet, char regulationMark, Student pokemonOwner) {
+    public Card(PokemonStage pokemonStage, String name, int hp, EnergyType pokemonType,
+                Card evolvesFrom, List<AttackSkill> skills, EnergyType weaknessType,
+                EnergyType resistanceType, String retreatCost, String gameSet, char regulationMark, Student pokemonOwner, String number) {
         this.pokemonStage = pokemonStage;
         this.name = name;
         this.hp = hp;
@@ -127,6 +138,7 @@ public class Card implements Serializable{
         this.gameSet = gameSet;
         this.regulationMark = regulationMark;
         this.pokemonOwner = pokemonOwner;
+        this.number = number;
     }
 
     public Card() {
@@ -136,17 +148,18 @@ public class Card implements Serializable{
     public String toString() {
         return "Card{" +
                 "pokemonStage=" + pokemonStage +
-                ", name='" + name + '\'' +
-                ", hp=" + hp +
-                ", pokemonType=" + pokemonType +
-                ", evolvesFrom=" + evolvesFrom +
-                ", skills=" + skills +
-                ", weaknessType=" + weaknessType +
-                ", resistanceType=" + resistanceType +
-                ", retreatCost='" + retreatCost + '\'' +
-                ", gameSet='" + gameSet + '\'' +
-                ", regulationMark=" + regulationMark +
-                ", pokemonOwner=" + pokemonOwner +
+                ",\n name='" + name + '\'' +
+                ",\n hp=" + hp +
+                ",\n pokemonType=" + pokemonType +
+                ",\n evolvesFrom=" + evolvesFrom +
+                ",\n skills=" + skills +
+                ",\n weaknessType=" + weaknessType +
+                ",\n resistanceType=" + resistanceType +
+                ",\n retreatCost='" + retreatCost + '\'' +
+                ",\n gameSet='" + gameSet + '\'' +
+                ",\n regulationMark=" + regulationMark +
+                ",\n pokemonOwner=" + pokemonOwner +
+                ",\n number=" + number +
                 '}';
     }
 

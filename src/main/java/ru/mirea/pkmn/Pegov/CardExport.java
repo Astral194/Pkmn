@@ -1,5 +1,6 @@
 package ru.mirea.pkmn.Pegov;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import ru.mirea.pkmn.Card;
 
 import java.io.FileOutputStream;
