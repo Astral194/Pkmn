@@ -53,11 +53,11 @@ public class AttackSkill implements Serializable {
 
     @Override
     public String toString() {
-        return "AttackSkill{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", cost='" + cost + '\'' +
-                ", damage=" + damage +
-                '}';
+        return "{" +
+                "\"name\":\"" + name + '\"' +
+                ", \"description\":\"" + description + '\"' +
+                ", \"cost\":\"" + cost + '\"' +
+                ", \"damage\":\"" + damage +
+                "\"}";
     }
 }

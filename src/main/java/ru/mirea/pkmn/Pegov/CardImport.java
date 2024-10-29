@@ -1,6 +1,9 @@
 package ru.mirea.pkmn.Pegov;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import ru.mirea.pkmn.*;
 import ru.mirea.pkmn.Pegov.web.http.PkmnHttpClient;
 
@@ -77,7 +80,7 @@ public class CardImport {
         List<String> desc_of_attack = new ArrayList<>();
         for (JsonNode att : attack){
             for (JsonNode attacks : att){
-                desc_of_attack.add(attacks.get("text").toString());
+                desc_of_attack.add(attacks.get("text").asText());
             }
         }
         return desc_of_attack;
@@ -87,7 +90,7 @@ public class CardImport {
         if (s.equalsIgnoreCase("none")) return new Student();
 
         String[] info = s.split(" / ");
-        Student student = new Student(info[0], info[1], info[2], info[3]);
+        Student student = new Student(info[1], info[0], info[2], info[3]);
         return student;
     }
 
@@ -99,4 +102,21 @@ public class CardImport {
             throw new RuntimeException("Путь до файла не найден");
         }
     }
+
+    public static ArrayList<AttackSkill> parseAttackSkillsFromJson(String json) throws JsonProcessingException {
+        ArrayList<AttackSkill> result = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode tmp = (ArrayNode) objectMapper.readTree(json);
+        for(int i = 0; i < tmp.size(); i++){
+            JsonNode jn = tmp.get(i);
+            AttackSkill as = new AttackSkill();
+            as.setDescription(jn.findValue("description").toString());
+            as.setCost(jn.findValue("cost").toString());
+            as.setDamage((jn.get("damage").asInt()));
+            as.setName(jn.findValue("name").toString());
+            result.add(as);
+        }
+        return result;
+    }
+
 }

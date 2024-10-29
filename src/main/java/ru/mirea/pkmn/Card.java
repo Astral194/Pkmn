@@ -51,7 +51,7 @@ public class Card implements Serializable{
         this.hp = hp;
     }
 
-    public EnergyType getPokemonTye() {
+    public EnergyType getPokemonType() {
         return pokemonType;
     }
 
