@@ -118,12 +118,10 @@ public class DatabaseServiceImpl implements DatabaseService {
         String query = String.format("SELECT * FROM student WHERE (id = '%s');", studentName);
         ResultSet rs = connection.createStatement().executeQuery(query);
         if(rs.next()){
-
             result.setFirstName(rs.getString("firstName"));
             result.setFamilyName(rs.getString("familyName"));
             result.setSurName(rs.getString("patronicName"));
             result.setGroup(rs.getString("group"));
-
         }
         else {
             throw new RuntimeException("Empty result from database");
@@ -138,15 +136,19 @@ public class DatabaseServiceImpl implements DatabaseService {
         if (card.getEvolvesFrom() != null){
             Insert.append("evolves_from, ");
             saveCardToDatabase(card.getEvolvesFrom());
-            ResultSet rs = connection.createStatement().executeQuery(String.format("SELECT id FROM card WHERE (name = '%s');", card.getEvolvesFrom().getName()));
-            rs.next();
+            Statement stmt = connection.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE
+            );
+            ResultSet rs = stmt.executeQuery(String.format("SELECT id FROM card WHERE (name = '%s');", card.getEvolvesFrom().getName()));
+            rs.last();
             Values.append("'").append(rs.getObject("id")).append("', ");
         }
         if (card.getPokemonOwner() != null) {
             Insert.append(" pokemon_owner,");
             try{
                 String query = String.format("SELECT id FROM student WHERE (\"familyName\" = '%s' AND \"firstName\" = '%s' AND \"patronicName\" = '%s');",
-                        card.getPokemonOwner().getFamilyName(), card.getPokemonOwner().getFirstName(), card.getPokemonOwner().getSurName());
+                        card.getPokemonOwner().getSurName(), card.getPokemonOwner().getFirstName(), card.getPokemonOwner().getFamilyName());
                 ResultSet rs = connection.createStatement().executeQuery(query);
                 rs.next();
                 Values.append("'").append(rs.getObject("id")).append("', ");

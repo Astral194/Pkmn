@@ -140,7 +140,9 @@
       <workItem from="1730223474453" duration="8804000" />
       <workItem from="1730234604271" duration="4262000" />
       <workItem from="1730238890646" duration="2903000" />
-      <workItem from="1730286708907" duration="1371000" />
+      <workItem from="1730286708907" duration="2951000" />
+      <workItem from="1730312026451" duration="48000" />
+      <workItem from="1730312082413" duration="1523000" />
     </task>
     <task id="LOCAL-00001" summary="...">
       <option name="closed" value="true" />
@@ -150,7 +152,23 @@
       <option name="project" value="LOCAL" />
       <updated>1730241694179</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="...">
+      <option name="closed" value="true" />
+      <created>1730288995577</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1730288995577</updated>
+    </task>
+    <task id="LOCAL-00003" summary="...">
+      <option name="closed" value="true" />
+      <created>1730312035523</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1730312035523</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -170,21 +188,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="..." />
     <option name="LAST_COMMIT_MESSAGE" value="..." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/ru/mirea/pkmn/Pegov/CardImport.java</url>
-          <line>105</line>
-          <properties class="ru.mirea.pkmn.Pegov.CardImport" method="parseAttackSkillsFromJson">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
