@@ -17,7 +17,7 @@ public class PkmnApplication {
         System.out.println(card.toString());
 
         DatabaseServiceImpl db = new DatabaseServiceImpl();
-
+        db.createPokemonOwner(card.getPokemonOwner());
         db.saveCardToDatabase(card);
     }
 }

@@ -149,8 +149,9 @@ public class DatabaseServiceImpl implements DatabaseService {
             try{
                 String query = String.format("SELECT id FROM student WHERE (\"familyName\" = '%s' AND \"firstName\" = '%s' AND \"patronicName\" = '%s');",
                         card.getPokemonOwner().getSurName(), card.getPokemonOwner().getFirstName(), card.getPokemonOwner().getFamilyName());
-                ResultSet rs = connection.createStatement().executeQuery(query);
-                rs.next();
+                ResultSet rs = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE).executeQuery(query);
+                rs.last();
                 Values.append("'").append(rs.getObject("id")).append("', ");
             }catch (Exception e){
                 Values.append("'").append(createPokemonOwner(card.getPokemonOwner())).append("', ");
