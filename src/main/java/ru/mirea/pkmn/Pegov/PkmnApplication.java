@@ -13,9 +13,11 @@ import java.util.stream.Collectors;
 
 public class PkmnApplication {
     public static void main(String[] args) throws IOException, SQLException {
+        Card card = CardImport.readCard("src/main/resources/my_card.txt");
+        System.out.println(card.toString());
+
         DatabaseServiceImpl db = new DatabaseServiceImpl();
 
-        Card myCard = CardImport.readCard("src/main/resources/my_card.txt");
-        db.saveCardToDatabase(myCard);
+        db.saveCardToDatabase(card);
     }
 }

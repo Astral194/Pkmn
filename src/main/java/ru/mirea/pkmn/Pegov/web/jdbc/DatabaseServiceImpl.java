@@ -133,61 +133,50 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     public void saveCardToDatabase(Card card) throws SQLException {
-        StringBuilder queryBase = new StringBuilder("INSERT INTO card(");
-        StringBuilder query = new StringBuilder("VALUES(");
+        StringBuilder Insert = new StringBuilder("INSERT INTO card(");
+        StringBuilder Values = new StringBuilder("VALUES(");
         if (card.getEvolvesFrom() != null){
-            queryBase.append("evolves_from, ");
-            try {
-                ResultSet rs = connection.createStatement().executeQuery(String.format("SELECT id FROM card WHERE (name = '%s');", card.getEvolvesFrom().getName()));
-                rs.next();
-                query.append("'").append(rs.getObject("id")).append("', ");
-            } catch (SQLException e){
-                saveCardToDatabase(card.getEvolvesFrom());
-                try {
-                    ResultSet rs = connection.createStatement().executeQuery(String.format("SELECT id FROM card WHERE (name = '%s');", card.getEvolvesFrom().getName()));
-                    rs.next();
-                    query.append("'").append(rs.getObject("id")).append("',");
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
+            Insert.append("evolves_from, ");
+            saveCardToDatabase(card.getEvolvesFrom());
+            ResultSet rs = connection.createStatement().executeQuery(String.format("SELECT id FROM card WHERE (name = '%s');", card.getEvolvesFrom().getName()));
+            rs.next();
+            Values.append("'").append(rs.getObject("id")).append("', ");
         }
         if (card.getPokemonOwner() != null) {
-            queryBase.append(" pokemon_owner,");
+            Insert.append(" pokemon_owner,");
             try{
-                String tmp = String.format("SELECT id FROM student WHERE (\"familyName\" = '%s' AND \"firstName\" = '%s' AND \"patronicName\" = '%s');",
+                String query = String.format("SELECT id FROM student WHERE (\"familyName\" = '%s' AND \"firstName\" = '%s' AND \"patronicName\" = '%s');",
                         card.getPokemonOwner().getFamilyName(), card.getPokemonOwner().getFirstName(), card.getPokemonOwner().getSurName());
-                ResultSet rs = connection.createStatement().executeQuery(tmp);
+                ResultSet rs = connection.createStatement().executeQuery(query);
                 rs.next();
-                query.append("'").append(rs.getObject("id")).append("', ");
+                Values.append("'").append(rs.getObject("id")).append("', ");
             }catch (Exception e){
-                query.append("'").append(createPokemonOwner(card.getPokemonOwner())).append("', ");
+                Values.append("'").append(createPokemonOwner(card.getPokemonOwner())).append("', ");
             }
 
         }
-        queryBase.append(" id, name, hp, game_set, stage, retreat_cost, weakness_type, resistance_type, attack_skills, pokemon_type, regulation_mark, card_number) ");
-        query.append("'").append(UUID.randomUUID()).append("', '");
-        query.append(card.getName()).append("', ");
-        query.append(card.getHp()).append(", '");
-        query.append(card.getGameSet()).append("', '");
-        query.append(card.getPokemonStage()).append("', '");
-        query.append(card.getRetreatCost()).append("', '");
-        query.append(card.getWeaknessType()).append("', '");
-        query.append(card.getResistanceType()).append("', '");
-        query.append("[");
+        Insert.append(" id, name, hp, game_set, stage, retreat_cost, weakness_type, resistance_type, attack_skills, pokemon_type, regulation_mark, card_number) ");
+        Values.append("'").append(UUID.randomUUID()).append("', '");
+        Values.append(card.getName()).append("', ");
+        Values.append(card.getHp()).append(", '");
+        Values.append(card.getGameSet()).append("', '");
+        Values.append(card.getPokemonStage()).append("', '");
+        Values.append(card.getRetreatCost()).append("', '");
+        Values.append(card.getWeaknessType()).append("', '");
+        Values.append(card.getResistanceType()).append("', '");
+        Values.append("[");
         for (AttackSkill as : card.getSkills()){
-            query.append(as.toString().replace('\'', '`')).append(", ");
+            Values.append(as.toString().replace('\'', '`')).append(", ");
         }
-        query.delete(query.length()-2, query.length()-1);
-        query.append("]").append("', '");
-        query.append(card.getPokemonType()).append("', '");
-        query.append(card.getRegulationMark()).append("', ");
-        query.append(card.getNumber());
-        query.append(");");
+        Values.delete(Values.length()-2, Values.length()-1);
+        Values.append("]', '");
+        Values.append(card.getPokemonType()).append("', '");
+        Values.append(card.getRegulationMark()).append("', ");
+        Values.append(card.getNumber()).append(");");
 
-        System.out.println(queryBase.toString() + query.toString());
+        System.out.println(Insert.toString() + Values.toString());
 
-        connection.createStatement().executeUpdate(queryBase.toString() + query.toString());
+        connection.createStatement().executeUpdate(Insert.toString() + Values.toString());
     }
 
     @Override
