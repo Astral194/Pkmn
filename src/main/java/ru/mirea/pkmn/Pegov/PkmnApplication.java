@@ -14,10 +14,12 @@ import java.util.stream.Collectors;
 public class PkmnApplication {
     public static void main(String[] args) throws IOException, SQLException {
         Card card = CardImport.readCard("src/main/resources/my_card.txt");
-        System.out.println(card.toString());
 
         DatabaseServiceImpl db = new DatabaseServiceImpl();
         db.createPokemonOwner(card.getPokemonOwner());
         db.saveCardToDatabase(card);
+
+        System.out.println(db.getCardFromDatabase("Pangoro").toString());
+        System.out.println(db.getStudentFromDatabase("Pegov Evgeniy Viktorovich").toString());
     }
 }

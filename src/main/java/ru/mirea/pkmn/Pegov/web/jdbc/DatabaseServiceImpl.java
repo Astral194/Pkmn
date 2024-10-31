@@ -7,6 +7,7 @@ import ru.mirea.pkmn.Pegov.CardImport;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -52,7 +53,7 @@ public class DatabaseServiceImpl implements DatabaseService {
             result.setWeaknessType(EnergyType.valueOf(rs.getString("weakness_type")));
             result.setGameSet(rs.getString("game_set"));
             String resist = rs.getString("resistance_type");
-            result.setResistanceType(resist == null ? null : EnergyType.valueOf(resist));
+            result.setResistanceType(Objects.equals(resist, "null") ? null : EnergyType.valueOf(resist));
             result.setPokemonStage(PokemonStage.valueOf(rs.getString("stage").toUpperCase()));
             result.setRetreatCost(rs.getString("retreat_cost"));
             result.setSkills(CardImport.parseAttackSkillsFromJson(rs.getString("attack_skills")));
@@ -81,7 +82,8 @@ public class DatabaseServiceImpl implements DatabaseService {
             result.setWeaknessType(EnergyType.valueOf(rs.getString("weakness_type")));
             result.setGameSet(rs.getString("game_set"));
             String resist = rs.getString("resistance_type");
-            result.setResistanceType(resist == null ? null : EnergyType.valueOf(resist));
+            System.out.println(resist);
+            result.setResistanceType(Objects.equals(resist, "null") ? null : EnergyType.valueOf(resist));
             result.setPokemonStage(PokemonStage.valueOf(rs.getString("stage").toUpperCase()));
             result.setRetreatCost(rs.getString("retreat_cost"));
             result.setSkills(CardImport.parseAttackSkillsFromJson(rs.getString("attack_skills")));
@@ -102,8 +104,8 @@ public class DatabaseServiceImpl implements DatabaseService {
         if(rs.next()){
 
             result.setFirstName(rs.getString("firstName"));
-            result.setFamilyName(rs.getString("familyName"));
-            result.setSurName(rs.getString("patronicName"));
+            result.setFamilyName(rs.getString("patronicName"));
+            result.setSurName(rs.getString("familyName"));
             result.setGroup(rs.getString("group"));
 
         }
